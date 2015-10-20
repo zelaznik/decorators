@@ -32,3 +32,5 @@ class Mixin(object):
             dct.update(mix.__dict__)
         dct.update(cls.__dict__)
         return type.__new__(mcls, name, bases, dct)
+
+    __all__ = ['Mixin']
