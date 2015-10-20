@@ -11,3 +11,5 @@ def memoize(func):
         cache[key] = val
         return val
     return _memoize
+
+__all__ = ['memoize']
