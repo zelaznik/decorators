@@ -1,6 +1,7 @@
 from functools import wraps
 
 def memoize(func):
+    ''' Stores the results of function calls in a dictionary. '''
     cache = {}
     @wraps(func)
     def _memoize(*args, **kw):
