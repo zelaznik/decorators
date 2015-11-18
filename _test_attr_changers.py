@@ -58,8 +58,7 @@ class test_attr_reader(unittest.TestCase):
         @attr_reader('x')
         class Foo(object):
             __slots__ = ('__x','__y')
-            x = property()
-            @x.setter
+            @property.setter
             def x(self, value):
                 self.__x = value
         f = Foo()
