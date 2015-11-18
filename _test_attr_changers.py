@@ -3,41 +3,32 @@ import unittest
 from attr_changers import *
 
 from math import atan
-try:
-    @attr_reader('x', 'y')
-    class Reader(object):
-        def __init__(self, x, y):
-            self.__x, self.__y = x,y
-        def __abs__(self):
-            return (self.__x**2+self.__y**2)**0.5
-        @property
-        def theta(self):
-            return atan(self.y / self.x)
-except Exception:
-    pass
 
-try:
-    @attr_writer('x', 'y')
-    class Writer(object):
-        def __abs__(self):
-            return (self.__x**2+self.__y**2)**0.5
-        @property
-        def theta(self):
-            return atan(self.y / self.x)
-except Exception:
-    pass
+@attr_reader('x', 'y')
+class Reader(object):
+    def __init__(self, x, y):
+        self.__x, self.__y = x,y
+    def __abs__(self):
+        return (self.__x**2+self.__y**2)**0.5
+    @property
+    def theta(self):
+        return atan(self.y / self.x)
 
-try:
-    from math import atan
-    @attr_accessor('x', 'y')
-    class Accessor(object):
-        def __abs__(self):
-            return (self.__x**2+self.__y**2)**0.5
-        @property
-        def theta(self):
-            return atan(self.y / self.x)
-except Exception:
-    pass
+@attr_writer('x', 'y')
+class Writer(object):
+    def __abs__(self):
+        return (self.__x**2+self.__y**2)**0.5
+    @property
+    def theta(self):
+        return atan(self.y / self.x)
+
+@attr_accessor('x', 'y')
+class Accessor(object):
+    def __abs__(self):
+        return (self.__x**2+self.__y**2)**0.5
+    @property
+    def theta(self):
+        return atan(self.y / self.x)
 
 class test_attr_reader(unittest.TestCase):
     def setUp(self):
