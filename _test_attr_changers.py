@@ -6,47 +6,37 @@ from math import atan
 
 @attr_reader('x', 'y')
 class Reader(object):
+    __slots__ = ('__x','__y')
     def __init__(self, x, y):
         self.__x, self.__y = x,y
     def __abs__(self):
         return (self.__x**2+self.__y**2)**0.5
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
 
 @attr_writer('x', 'y')
 class Writer(object):
+    __slots__ = ('__x','__y')
     def __abs__(self):
         return (self.__x**2+self.__y**2)**0.5
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
 
 @attr_accessor('x', 'y')
 class Accessor(object):
+    __slots__ = ('__x','__y')
     def __abs__(self):
         return (self.__x**2+self.__y**2)**0.5
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
 
 @attr_reader('x')
 @attr_writer('x','y')
 class Read_X_Write_Both(object):
+    __slots__ = ('__x','__y')
     def __abs__(self):
         return (self.__x**2+self.__y**2)**0.5
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
 
 @attr_writer('y')
 @attr_reader('x','y')
 class Write_Y_Read_Both(object):
+    __slots__ = ('__x','__y')
     def __abs__(self):
         return (self.__x**2+self.__y**2)**0.5
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
 
 class test_attr_reader(unittest.TestCase):
     def setUp(self):
@@ -67,6 +57,7 @@ class test_attr_reader(unittest.TestCase):
     def test_reader_preserves_preexisting_setter_properties(self):
         @attr_reader('x')
         class Foo(object):
+            __slots__ = ('__x','__y')
             x = property()
             @x.setter
             def x(self, value):

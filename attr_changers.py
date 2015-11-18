@@ -49,25 +49,3 @@ def attr_accessor(*attribute_names):
         cls = attr_writer(*attribute_names)(cls)
         return cls
     return _attr_accessor
-
-@attr_reader('x', 'y')
-class Reader(object):
-    def __init__(self, x, y):
-        self.__x, self.__y = x,y
-    def __abs__(self):
-        return (self.x**2+self.y**2)**0.5
-
-@attr_writer('x', 'y')
-class Writer(object):
-    def __abs__(self):
-        return (self.__x**2+self.__y**2)**0.5
-
-from math import atan
-@attr_accessor('x', 'y')
-class Accessor(object):
-    def __abs__(self):
-        return (self.__x**2+self.__y**2)**0.5        
-    r = property(__abs__)
-    @property
-    def theta(self):
-        return atan(self.y / self.x)
