@@ -30,9 +30,28 @@ class Accessor(object):
     def theta(self):
         return atan(self.y / self.x)
 
+@attr_reader('x')
+@attr_writer('x','y')
+class Read_X_Write_Both(object):
+    def __abs__(self):
+        return (self.__x**2+self.__y**2)**0.5
+    @property
+    def theta(self):
+        return atan(self.y / self.x)
+
+@attr_writer('y')
+@attr_reader('x','y')
+class Write_Y_Read_Both(object):
+    def __abs__(self):
+        return (self.__x**2+self.__y**2)**0.5
+    @property
+    def theta(self):
+        return atan(self.y / self.x)
+
 class test_attr_reader(unittest.TestCase):
     def setUp(self):
         self.r = Reader(3,4)
+        self.d = Write_Y_Read_Both()
 
     def test_reader_private_attributes_readable_by_class(self):
         self.assertEqual(abs(self.r), 5)
@@ -44,6 +63,18 @@ class test_attr_reader(unittest.TestCase):
     def test_reader_attributes_not_writeable_from_outside(self):
         self.assertRaises(AttributeError, setattr, self.r, 'x', 3)
         self.assertRaises(AttributeError, setattr, self.r, 'y', 4)
+
+    def test_reader_preserves_preexisting_setter_properties(self):
+        @attr_reader('x')
+        class Foo(object):
+            x = property()
+            @x.setter
+            def x(self, value):
+                self.__x = value
+        f = Foo()
+        f.x = 3
+        self.assertEqual(f.x, 3)
+        self.assertRaises(AttributeError, setattr, f, 'y', 4)
 
 class test_attr_writer(unittest.TestCase):
     def setUp(self):
@@ -64,6 +95,18 @@ class test_attr_writer(unittest.TestCase):
         self.assertEqual(abs(self.w), 4)
         self.w.y = 0
         self.assertEqual(abs(self.w), 0)
+
+    def test_writer_preserves_preexisting_getter_properties(self):
+        @attr_writer('x','y')
+        class Foo(object):
+            @property
+            def x(self):
+                return self.__x
+        f = Foo()
+        f.x = 3
+        f.y = 4
+        self.assertEqual(f.x, 3)
+        self.assertRaises(AttributeError, getattr, f, 'y')
 
 class test_attr_accessor(unittest.TestCase):
     def setUp(self):
